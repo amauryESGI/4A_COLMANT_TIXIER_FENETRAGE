@@ -20,8 +20,11 @@
 #include<GL/glut.h>
 #include<stdlib.h>
 #include<stdio.h>
+#include<iostream>
+#include<vector>
+#include"Vector2D.h"
 
-int x0, y0;  // clic souris
+int clicx, clicy;  // clic souris
 int cpt = 0;
 int monTableauDePointX[10];
 int monTableauDePointY[10];
@@ -31,11 +34,7 @@ int recty;
 int monTableauPointRectX[2];
 int monTableauPointRectY[2];
 int cptrect = 0;
-/*
-int* maListeDePointX[1];
-int maListeDePointXBis[1];
-int _size = 0;
-*/
+
 
 bool couleur = false;
 bool polygone = true;
@@ -43,6 +42,11 @@ bool trace_fenetre = false;
 bool fenetrage = false;
 bool remplissage = false;
 bool raz = false;
+
+std::vector<Vector2D> maListDePointPolygone;
+std::vector<Vector2D> maListDePointFenetre;
+
+
 
 // Menu items
 enum MENU_TYPE
@@ -52,6 +56,7 @@ enum MENU_TYPE
 	MENU_TRACE_FENETRE,
 	MENU_FENETRAGE,
 	MENU_REMPLISSAGE,
+	MENU_RAZ,
 };
 
 
@@ -63,31 +68,89 @@ void affichage(void);                             // modélisation
 void clavier(unsigned char touche, int x, int y);   // fonction clavier
 void mouse(int bouton, int etat, int x, int y);      // fonction souris
 void menu(int item);
+void methodFenetrage(void);
+//
+//void sutherland(void);
+//
+////PARAMETRE SUTHER//
+//
+//PL;
+//PW;
+//
+//bool coupe(int S, int Pj, int Fi, int Fi + 1);
+//bool intersection(int S, int Pj, int Fi, int Fi + 1);
+//bool visible(int S, int Fi, int Fi + 1);
+//
+//
+//
+//// Sutherland-Hodgman
+//
+///*Pour chaque point de la window PW*/
+//for(i = 1; i < (N3 - 1; ++i)
+//{
+//	N2 = 0;
+//	PS = NULL;
+//	for (j = 1; j < N1; ++j)
+//	{
+//		if (j = 1)
+//		{
+//			F = Pj;/*Sauver le 1er = dernier sommet*/
+//		}
+//		else
+//		{
+//			if (coupe(S, Pj, Fi, Fi + 1))
+//			{
+//				I = intersection(S, Pj, Fi, Fi + 1);
+//				Charger(I, PS);
+//				N2++;
+//			}
+//		}
+//		S = Pj;
+//		if (visible(S, Fi, Fi + 1))
+//		{
+//			Charger(S, PS);
+//			N2++;
+//		}
+//	}
+//	if (N2 > 0)
+//	{
+//		/*Traitement du dernier coté de PL*/
+//		if (coupe(S, F, Fi, Fi + 1))
+//		{
+//			I = intersection(S, F, Fi, Fi + 1);
+//				Charger(I, PS);
+//			N2++;
+//		}
+//		PL = PS;
+//		N1 = N2;
+//	}
+//}
+///* Pour chaque point du polygone PL*/
+//
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Programme principal */
 int main(int argc,       // argc: nombre d'arguments, argc vaut au moins 1
 	char **argv){  // argv: tableau de chaines de caractères, argv[0] contient le nom du programme lancé (plus un éventuel chemin)
 
-	for (int i = 0; i<sizeof(monTableauDePointX) / sizeof(*monTableauDePointX); i++)
-	{
-		monTableauDePointX[i] = NULL;
-	}
-	for (int i = 0; i<sizeof(monTableauDePointY) / sizeof(*monTableauDePointY); i++)
-	{
-		monTableauDePointY[i] = NULL;
-	}
-
-	for (int i = 0; i<sizeof(monTableauPointRectX) / sizeof(*monTableauPointRectX); i++)
-	{
-		monTableauPointRectX[i] = NULL;
-	}
-
-	for (int i = 0; i<sizeof(monTableauPointRectY) / sizeof(*monTableauPointRectY); i++)
-	{
-		monTableauPointRectY[i] = NULL;
-	}
-
-
+	
 
 	/* Initialisation de glut et creation de la fenetre */
 	glutInit(&argc, argv);                       // Initialisation
@@ -120,7 +183,8 @@ int main(int argc,       // argc: nombre d'arguments, argc vaut au moins 1
 	glutAddMenuEntry("Trace fenetre", MENU_TRACE_FENETRE);
 	glutAddMenuEntry("Fenetrage", MENU_FENETRAGE);
 	glutAddMenuEntry("Remplissage", MENU_REMPLISSAGE);
-
+	glutAddMenuEntry("Remise à zéro", MENU_RAZ);
+	//glutAddSubMenu("Vert", MENU_COULEUR);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 
@@ -136,62 +200,59 @@ int main(int argc,       // argc: nombre d'arguments, argc vaut au moins 1
 void affichage(){
 
 
-	printf(couleur ? " couleur true" : " couleur false");
-	printf(polygone ? " polygone true" : " polygone false");
-	printf(trace_fenetre ? " trace_fenetre true" : " trace_fenetre false");
-	printf(fenetrage ? " fenetrage true" : " fenetrage false");
-	printf(remplissage ? " remplissage true" : " remplissage false");
-
+	//std::cout << raz << std::endl;
+	//std::cout << trace_fenetre << std::endl;
 
 
 
 	glClear(GL_COLOR_BUFFER_BIT);
-
-
+	
 	/*   A vous de jouer !!!   */
 
 	// TRACAGE DU POLYGONE
-	if (polygone == true)
-	{
+		glColor3f(1.0, 0, 0);
+
 		glBegin(GL_POINTS);
 
-		glVertex2f(x0, y0);
+		glVertex2f(clicx, clicy);
 
 		glEnd();
 
 
-		if (monTableauDePointX[2] != NULL && monTableauDePointY[2] != NULL)
-		{
 			glBegin(GL_LINE_LOOP);
 
-			for (int i = 0; i<sizeof(monTableauDePointX) / sizeof(*monTableauDePointX); i++)
+			for (int i = 0; i < maListDePointPolygone.size(); i++)
 			{
-				if (monTableauDePointX[i] != NULL && monTableauDePointY[i] != NULL)
-				{
-					glVertex2f(monTableauDePointX[i], monTableauDePointY[i]);
-				}
 
+				glVertex2f(maListDePointPolygone[i]._x, maListDePointPolygone[i]._y);
 			}
-			glEnd();
-		}
-	}
 
+			glEnd();
+		//}
 	//TRACAGE DU FENETRAGE
-	if (fenetrage == true)
-	{
+		glColor3f(0, 1.0, 0);
+
 		glBegin(GL_POINTS);
 
 		glVertex2f(rectx, recty);
 
 		glEnd();
+		
 
-		if (monTableauPointRectX[1] != NULL && monTableauPointRectY[1] != NULL)
+		glBegin(GL_LINE_LOOP);
+
+		for (int i = 0; i < maListDePointFenetre.size(); ++i)
 		{
-			glRectd(monTableauPointRectX[0], monTableauPointRectY[0], monTableauPointRectX[1], monTableauPointRectY[1]);
-
+			glVertex2f(maListDePointFenetre[i]._x, maListDePointFenetre[i]._y);
 		}
 
-	}
+		glEnd();
+
+		
+		
+			
+		
+		
 
 	// On force l'affichage du résultat
 	glFlush();
@@ -210,40 +271,53 @@ void mouse(int button, int state, int x, int y)
 		// Si on appuie sur le bouton de gauche
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 		{
-			x0 = x - 250; //on sauvegarde la position de la souris
-			y0 = -y + 250;
-			if (cpt<10)
-			{
-				monTableauDePointX[cpt] = x0;
-				monTableauDePointY[cpt] = y0;
+			clicx = x - 250; //on sauvegarde la position de la souris
+			clicy = -y + 250;
+				
 
-			}
-			cpt++;
+				maListDePointPolygone.push_back(Vector2D(clicx, clicy));
+			
+		
 
 			affichage();
 		}
 
+	}
+
+	if (trace_fenetre == true)
+	{
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		{
+			rectx = x - 250; //on sauvegarde la position de la souris
+			recty = -y + 250;
+			
+			maListDePointFenetre.push_back(Vector2D(rectx, recty));
+
+			
+			affichage();
+		}
 	}
 
 	if (fenetrage == true)
 	{
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 		{
-			rectx = x - 250; //on sauvegarde la position de la souris
-			recty = -y + 250;
-			if (cptrect<3)
-			{
-				monTableauPointRectX[cptrect] = rectx;
-				monTableauPointRectY[cptrect] = recty;
+			
+		}
+		
+	}
 
-			}
-			cptrect++;
+	if (raz == true)
+	{
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		{
+			maListDePointPolygone.erase(maListDePointPolygone.begin(), maListDePointPolygone.end());
+			maListDePointFenetre.erase(maListDePointFenetre.begin(), maListDePointFenetre.end());
+			
 
 			affichage();
 		}
 	}
-
-
 }
 
 
@@ -268,7 +342,7 @@ void menu(int item)
 		trace_fenetre = false;
 		fenetrage = false;
 		remplissage = false;
-
+		raz = false;
 	}
 		break;
 	case MENU_POLYGONE:
@@ -278,7 +352,7 @@ void menu(int item)
 		trace_fenetre = false;
 		fenetrage = false;
 		remplissage = false;
-
+		raz = false;
 	}
 		break;
 	case MENU_TRACE_FENETRE:
@@ -288,6 +362,7 @@ void menu(int item)
 		trace_fenetre = true;
 		fenetrage = false;
 		remplissage = false;
+		raz = false;
 
 	}
 		break;
@@ -298,7 +373,7 @@ void menu(int item)
 		trace_fenetre = false;
 		fenetrage = true;
 		remplissage = false;
-
+		raz = false;
 	}
 		break;
 	case MENU_REMPLISSAGE:
@@ -308,7 +383,17 @@ void menu(int item)
 		trace_fenetre = false;
 		fenetrage = false;
 		remplissage = true;
-
+		raz = false;
+	}
+		break;
+	case MENU_RAZ:	
+	{
+		couleur = false;
+		polygone = false;
+		trace_fenetre = false;
+		fenetrage = false;
+		remplissage = false;
+		raz = true;
 	}
 		break;
 	default:
@@ -318,7 +403,7 @@ void menu(int item)
 		trace_fenetre = false;
 		fenetrage = false;
 		remplissage = false;
-
+		raz = false;
 	}
 		break;
 	}
@@ -327,4 +412,5 @@ void menu(int item)
 
 	return;
 }
+
 
