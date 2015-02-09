@@ -17,7 +17,7 @@
 
 
 #include<windows.h>
-#include<glut.h>
+#include<GL/glut.h>
 #include<stdlib.h>
 #include<stdio.h>
 
