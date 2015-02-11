@@ -35,7 +35,7 @@ bool raz = false;
 std::vector<Point> maListDePointPolygone; 
 std::vector<Point> maListDePointFenetre; 
 std::vector<Point> monPolygoneFinal;
-std::vector<Point> PS;
+std::vector<Point> monPolygoneFinalTemporaire;
 bool afficherPolygoneClipper;
 
 GLfloat BLUE[3] = { 0.0, 0.0, 1.0 };
@@ -278,15 +278,23 @@ void mouse(int button, int state, int x, int y)
 		
 	}
 
+	if (remplissage == true)
+	{
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		{
+			/* Met ici ta méthode de remplissage */
+		}
+	}
+
 	if (raz == true)
 	{
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 		{
-			maListDePointPolygone.erase(maListDePointPolygone.begin(), maListDePointPolygone.end());
-			maListDePointFenetre.erase(maListDePointFenetre.begin(), maListDePointFenetre.end());
-			
-
+			maListDePointFenetre.clear();
+			maListDePointPolygone.clear();
+			monPolygoneFinal.clear();
 			affichage();
+			
 		}
 	}
 }
@@ -529,49 +537,49 @@ Point intersection(Point P1, Point P2, Point F1, Point F2)
 	return pointIntersection;
 }
 
-void algorithmeSuthern(std::vector<Point> Window, std::vector<Point> Polygon2Clipp)
+void algorithmeSuthern(std::vector<Point> Fenetre, std::vector<Point> PolygonAClipper)
 {
-	monPolygoneFinal = Polygon2Clipp;                                                           
-	Point first;                                                                                
+	monPolygoneFinal = PolygonAClipper;
+	Point premierPoint;                                                                                
 	Point I;
 	Point S;
 	int i = 0, j = 0;
-	std::vector<Point>::iterator wit;                                                             
-	std::vector<Point>::iterator pit;                                                            
-	for (wit = Window.begin(); wit != Window.end(); ++wit)                                           
+	std::vector<Point>::iterator fenetreIterator;                                                             
+	std::vector<Point>::iterator polygoneIterator;                                                            
+	for (fenetreIterator = Fenetre.begin(); fenetreIterator != Fenetre.end(); ++fenetreIterator)
 	{
 		j = 0;
-		for (pit = monPolygoneFinal.begin(); pit != monPolygoneFinal.end(); ++pit)                   
+		for (polygoneIterator = monPolygoneFinal.begin(); polygoneIterator != monPolygoneFinal.end(); ++polygoneIterator)
 		{
 			if (0 == j)                                                                         
-				first = *pit;                                                                   
+				premierPoint = *polygoneIterator;
 			else
 			{
-				Point next = (*wit == Window.back()) ? Window.front() : (Window[i + 1]);
-				if (coupe(S, *pit, *wit, next, Window))                                            
+				Point pointSuivant = (*fenetreIterator == Fenetre.back()) ? Fenetre.front() : (Fenetre[i + 1]);
+				if (coupe(S, *polygoneIterator, *fenetreIterator, pointSuivant, Fenetre))
 				{
-					I = intersection(S, *pit, *wit, next);                                      
-					PS.push_back(I);                                                            
+					I = intersection(S, *polygoneIterator, *fenetreIterator, pointSuivant);
+					monPolygoneFinalTemporaire.push_back(I);
 				}
 			}
-			S = *pit;                                                                           
-			Point next = (*wit == Window.back()) ? Window.front() : (Window[i + 1]);
-			if (visible(S, *wit, next, Window))                                                  
-				PS.push_back(S);                                                                
+			S = *polygoneIterator;
+			Point pointSuivant = (*fenetreIterator == Fenetre.back()) ? Fenetre.front() : (Fenetre[i + 1]);
+			if (visible(S, *fenetreIterator, pointSuivant, Fenetre))
+				monPolygoneFinalTemporaire.push_back(S);
 
 			j++;
 		}
-		if (!PS.empty())                                                                         
+		if (!monPolygoneFinalTemporaire.empty())
 		{
 			
-			Point next = (*wit == Window.back()) ? Window.front() : (Window[i + 1]);
-			if (coupe(S, first, *wit, next, Window))                                              
+			Point pointSuivant = (*fenetreIterator == Fenetre.back()) ? Fenetre.front() : (Fenetre[i + 1]);
+			if (coupe(S, premierPoint, *fenetreIterator, pointSuivant, Fenetre))
 			{
-				I = intersection(S, first, *wit, next);                                         
-				PS.push_back(I);                                                                
+				I = intersection(S, premierPoint, *fenetreIterator, pointSuivant);
+				monPolygoneFinalTemporaire.push_back(I);
 			}
-			monPolygoneFinal = PS;                                                              
-			PS.clear();                                                                         
+			monPolygoneFinal = monPolygoneFinalTemporaire;
+			monPolygoneFinalTemporaire.clear();
 		}
 		else
 			monPolygoneFinal.clear();                                                           
@@ -581,4 +589,4 @@ void algorithmeSuthern(std::vector<Point> Window, std::vector<Point> Polygon2Cli
 	afficherPolygoneClipper = true;                                                                          
 }
 
-//
+
