@@ -8,11 +8,11 @@ using namespace std;
 #pragma once
 class RemplissageLCA {
 public:
-	RemplissageLCA(const int width, const int height);
-	~RemplissageLCA();
-
 	void Remplir(vector<MPoint<int>> v);
 	float coefDir(MPoint<int> pA, MPoint<int> pB);
+
+	RemplissageLCA(const int width, const int height);
+	~RemplissageLCA();
 
 private:
 	int _height;

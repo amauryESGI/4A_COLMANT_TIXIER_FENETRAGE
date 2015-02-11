@@ -23,8 +23,6 @@ int clicx, clicy;  // clic souris
 int rectx;
 int recty;
 
-
-
 bool couleur = false;
 bool polygone = true;
 bool trace_fenetre = false;
@@ -32,8 +30,8 @@ bool fenetrage = false;
 bool remplissage = false;
 bool raz = false;
 
-std::vector<Point> maListDePointPolygone; 
-std::vector<Point> maListDePointFenetre; 
+std::vector<Point> maListDePointPolygone;
+std::vector<Point> maListDePointFenetre;
 std::vector<Point> monPolygoneFinal;
 std::vector<Point> monPolygoneFinalTemporaire;
 bool afficherPolygoneClipper;
@@ -43,8 +41,7 @@ GLfloat GREEN[3] = { 0.0, 1.0, 0.0 };
 GLfloat RED[3] = { 1.0, 0.0, 0.0 };
 
 // Menu items
-enum MENU_TYPE
-{
+enum MENU_TYPE {
 	MENU_COULEUR,
 	MENU_POLYGONE,
 	MENU_TRACE_FENETRE,
@@ -53,8 +50,7 @@ enum MENU_TYPE
 	MENU_RAZ,
 };
 
-enum MENU_COLOR
-{
+enum MENU_COLOR {
 	COLOR_RED,
 	COLOR_BLUE,
 	COLOR_GREEN,
@@ -78,24 +74,21 @@ void algorithmeSuthern(std::vector<Point> Window, std::vector<Point> Polygon2Cli
 
 /*void dessinerPoint(int x, int y, GLfloat* color)
 {
-	glPushMatrix();
-	glColor3fv(color);
-	glBegin(GL_POINTS);
-	glVertex2f(x, y);
-	glEnd();
-	glPopMatrix();
+glPushMatrix();
+glColor3fv(color);
+glBegin(GL_POINTS);
+glVertex2f(x, y);
+glEnd();
+glPopMatrix();
 }*/
 
-void dessinerPolygon(std::vector<Point> list, GLfloat* color)
-{
-	if (!list.empty()) 
-	{
+void dessinerPolygon(std::vector<Point> list, GLfloat* color) {
+	if (!list.empty()) {
 		glPushMatrix();
 		glColor3fv(color);
 		glBegin(GL_LINE_LOOP);
 		std::vector<Point>::iterator lit;
-		for (int i = 0; i < list.size(); i++)
-		{
+		for (unsigned int i = 0; i < list.size(); i++) {
 			glVertex2f(list[i]._x, list[i]._y);
 		}
 		glEnd();
@@ -103,54 +96,50 @@ void dessinerPolygon(std::vector<Point> list, GLfloat* color)
 	}
 }
 
-
-
-
-
 /* Programme principal */
-int main(int argc,       // argc: nombre d'arguments, argc vaut au moins 1
-	char **argv){  // argv: tableau de chaines de caractères, argv[0] contient le nom du programme lancé (plus un éventuel chemin)
+int main(int argc,	// argc: nombre d'arguments, argc vaut au moins 1
+	char **argv) {  // argv: tableau de chaines de caractères, argv[0] contient le nom du programme lancé (plus un éventuel chemin)
 
 	/* SECTION DE TEST DE L'ALGO SUTHERLAND*/
-/*	maListDePointPolygone.push_back(Point(20,10));
-	maListDePointPolygone.push_back(Point(20,-10));
-	maListDePointPolygone.push_back(Point(0,-10));
+	/*	maListDePointPolygone.push_back(Point(20,10));
+		maListDePointPolygone.push_back(Point(20,-10));
+		maListDePointPolygone.push_back(Point(0,-10));
 
-	maListDePointFenetre.push_back(Point(10,10));
-	maListDePointFenetre.push_back(Point(30,20));
-	maListDePointFenetre.push_back(Point(30,-10));
-	maListDePointFenetre.push_back(Point(10,-20));
+		maListDePointFenetre.push_back(Point(10,10));
+		maListDePointFenetre.push_back(Point(30,20));
+		maListDePointFenetre.push_back(Point(30,-10));
+		maListDePointFenetre.push_back(Point(10,-20));
 
-	/*
-	bool maVisibiliteP1 = false;
-	maVisibiliteP1 = visible(maListDePointPolygone[0], maListDePointFenetre[0], maListDePointFenetre[1], maListDePointFenetre);
-	std::cout << "P1 : " <<  maVisibiliteP1 << std::endl;
+		/*
+		bool maVisibiliteP1 = false;
+		maVisibiliteP1 = visible(maListDePointPolygone[0], maListDePointFenetre[0], maListDePointFenetre[1], maListDePointFenetre);
+		std::cout << "P1 : " <<  maVisibiliteP1 << std::endl;
 
-	bool maVisibiliteP2 = false;
-	maVisibiliteP2 = visible(maListDePointPolygone[1], maListDePointFenetre[2], maListDePointFenetre[1], maListDePointFenetre);
-	std::cout << "P2 : " << maVisibiliteP2 << std::endl;
+		bool maVisibiliteP2 = false;
+		maVisibiliteP2 = visible(maListDePointPolygone[1], maListDePointFenetre[2], maListDePointFenetre[1], maListDePointFenetre);
+		std::cout << "P2 : " << maVisibiliteP2 << std::endl;
 
-	bool maVisibiliteP3 = false;
-	maVisibiliteP3 = visible(maListDePointPolygone[2], maListDePointFenetre[3], maListDePointFenetre[0], maListDePointFenetre);
-	std::cout << "P3 : " << maVisibiliteP3 << std::endl;
-	*/
-	
-	
+		bool maVisibiliteP3 = false;
+		maVisibiliteP3 = visible(maListDePointPolygone[2], maListDePointFenetre[3], maListDePointFenetre[0], maListDePointFenetre);
+		std::cout << "P3 : " << maVisibiliteP3 << std::endl;
+		*/
 
-	
+
+
+
 	/* Initialisation de glut et creation de la fenetre */
-	glutInit(&argc, argv);                       // Initialisation
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH); // mode d'affichage RGB, et test prafondeur
-	glutInitWindowSize(_WINDOW_WIDTH, _WINDOW_HEIGHT);				// dimension fenêtre
-	glutInitWindowPosition(100, 100);           // position coin haut gauche
-	glutCreateWindow("A vous de jouer!!!");		// nom
+	glutInit(&argc, argv);										// Initialisation
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);	// mode d'affichage RGB, et test prafondeur
+	glutInitWindowSize(_WINDOW_WIDTH, _WINDOW_HEIGHT);			// dimension fenêtre
+	glutInitWindowPosition(100, 100);							// position coin haut gauche
+	glutCreateWindow("A vous de jouer!!!");						// nom
 
 	/* Repère 2D délimitant les abscisses et les ordonnées*/
 	gluOrtho2D(-_WINDOW_WIDTH / 2, _WINDOW_WIDTH / 2, -_WINDOW_HEIGHT / 2, _WINDOW_HEIGHT / 2);
 
 	/* Initialisation d'OpenGL */
 	glClearColor(1.0, 1.0, 1.0, 1.0);
-	glColor3f(1.0, 0, 0); // couleur: blanc
+	glColor3f(1.0, 0, 0);			// couleur: blanc
 	glPointSize(2.0);               // taille d'un point: 2px
 
 	/* Enregistrement des fonctions de rappel
@@ -163,7 +152,7 @@ int main(int argc,       // argc: nombre d'arguments, argc vaut au moins 1
 	autre fonction. Ici, le main fait usage des deux fonctions de rappel (qui fonctionnent en même temps)
 	alors qu'il ne les connaît pas par avance.*/
 	int menu_color = glutCreateMenu(menu);
-	
+
 	glutAddMenuEntry("Couleur", MENU_COULEUR);
 	glutAddMenuEntry("Polygone a découper", MENU_POLYGONE);
 	glutAddMenuEntry("Trace fenetre", MENU_TRACE_FENETRE);
@@ -176,51 +165,33 @@ int main(int argc,       // argc: nombre d'arguments, argc vaut au moins 1
 	//glutAddSubMenu("RGB Menu",menu_color);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
-
-
 	/* Entrée dans la boucle principale de glut, traitement des évènements */
 	glutMainLoop();         // lancement de la boucle de réception des évènements
 	return 0;
 }
 
-
-
-
-void affichage(){
-
+void affichage() {
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	
-	
 
 	// TRACAGE DU POLYGONE
-	glColor3f(1.0,0.0,0.0);
+	glColor3f(1.0, 0.0, 0.0);
 	glBegin(GL_POINTS);
 	glVertex2f(clicx, clicy);
 	glEnd();
-	
-	
 
-	
 	dessinerPolygon(maListDePointPolygone, RED);
 	//TRACAGE DU FENETRAGE
-	
+
 	glColor3f(0.0, 1.0, 0.0);
 	glBegin(GL_POINTS);
 	glVertex2f(rectx, recty);
 	glEnd();
 	dessinerPolygon(maListDePointFenetre, GREEN);
-	
 
-	if (afficherPolygoneClipper == true)
-	{
+	if (afficherPolygoneClipper == true) {
 		dessinerPolygon(monPolygoneFinal, BLUE);
 	}
-			
-		
-			
-		
-		
 
 	// On force l'affichage du résultat
 	glFlush();
@@ -229,72 +200,51 @@ void affichage(){
 
 
 
-void mouse(int button, int state, int x, int y)
-{
+void mouse(int button, int state, int x, int y) {
 
-	if (polygone == true)
-	{
-
-
+	if (polygone == true) {
 		// Si on appuie sur le bouton de gauche
-		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-		{
-			
-				clicx = x - 250; //on sauvegarde la position de la souris
-				clicy = -y + 250;
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 
+			clicx = x - 250; //on sauvegarde la position de la souris
+			clicy = -y + 250;
 
-				maListDePointPolygone.push_back(Point(clicx, clicy));
+			maListDePointPolygone.push_back(Point(clicx, clicy));
 
-
-
-				affichage();
-			}
-		
-
-	}
-
-	if (trace_fenetre == true)
-	{
-		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-		{
-			rectx = x - 250; //on sauvegarde la position de la souris
-			recty = -y + 250;
-			
-			maListDePointFenetre.push_back(Point(rectx, recty));
-
-			
 			affichage();
 		}
 	}
 
-	if (fenetrage == true)
-	{
-		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-		{
+	if (trace_fenetre == true) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+			rectx = x - 250; //on sauvegarde la position de la souris
+			recty = -y + 250;
+
+			maListDePointFenetre.push_back(Point(rectx, recty));
+
+			affichage();
+		}
+	}
+
+	if (fenetrage == true) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 			algorithmeSuthern(maListDePointFenetre, maListDePointPolygone);
 			affichage();
 		}
-		
 	}
 
-	if (remplissage == true)
-	{
-		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-		{
+	if (remplissage == true) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 			/* Met ici ta méthode de remplissage */
 		}
 	}
 
-	if (raz == true)
-	{
-		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-		{
+	if (raz == true) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 			maListDePointFenetre.clear();
 			maListDePointPolygone.clear();
 			monPolygoneFinal.clear();
 			affichage();
-			
 		}
 	}
 }
@@ -302,8 +252,8 @@ void mouse(int button, int state, int x, int y)
 
 
 /* Evènement du clavier */
-void clavier(unsigned char touche, int x, int y){
-	switch (touche){
+void clavier(unsigned char touche, int x, int y) {
+	switch (touche) {
 	case 'e': //execute
 		algorithmeSuthern(maListDePointFenetre, maListDePointPolygone);
 		affichage();
@@ -319,10 +269,8 @@ void clavier(unsigned char touche, int x, int y){
 	}
 }
 
-void menu(int item)
-{
-	switch (item)
-	{
+void menu(int item) {
+	switch (item) {
 	case MENU_COULEUR:
 	{
 		couleur = true;
@@ -332,7 +280,7 @@ void menu(int item)
 		remplissage = false;
 		raz = false;
 	}
-		break;
+	break;
 	case MENU_POLYGONE:
 	{
 		couleur = false;
@@ -342,7 +290,7 @@ void menu(int item)
 		remplissage = false;
 		raz = false;
 	}
-		break;
+	break;
 	case MENU_TRACE_FENETRE:
 	{
 		couleur = false;
@@ -353,7 +301,7 @@ void menu(int item)
 		raz = false;
 
 	}
-		break;
+	break;
 	case MENU_FENETRAGE:
 	{
 		couleur = false;
@@ -363,7 +311,7 @@ void menu(int item)
 		remplissage = false;
 		raz = false;
 	}
-		break;
+	break;
 	case MENU_REMPLISSAGE:
 	{
 		couleur = false;
@@ -373,8 +321,8 @@ void menu(int item)
 		remplissage = true;
 		raz = false;
 	}
-		break;
-	case MENU_RAZ:	
+	break;
+	case MENU_RAZ:
 	{
 		couleur = false;
 		polygone = false;
@@ -383,7 +331,7 @@ void menu(int item)
 		remplissage = false;
 		raz = true;
 	}
-		break;
+	break;
 	default:
 	{
 		couleur = false;
@@ -393,7 +341,7 @@ void menu(int item)
 		remplissage = false;
 		raz = false;
 	}
-		break;
+	break;
 	}
 
 	glutPostRedisplay();
@@ -401,163 +349,137 @@ void menu(int item)
 	return;
 }
 
-void submenu(int item)
-{
-	switch (item)
-	{
+void submenu(int item) {
+	switch (item) {
 	case COLOR_RED:
 	{
-		
+
 	}
-		break;
+	break;
 	case COLOR_BLUE:
 	{
 
 	}
-		break;
+	break;
 	case COLOR_GREEN:
 	{
 
 	}
-		break;
+	break;
 	}
 	glutPostRedisplay();
 
 	return;
 }
 
-
 //Méthode permettant de calculer un vecteur
-Vector2D calculerVecteur(Point P1, Point P2)
-{
+Vector2D calculerVecteur(Point P1, Point P2) {
 	float x = (P2._x - P1._x);
 	float y = (P2._y - P1._y);
-	Vector2D vecteur(x, y); 
+	Vector2D vecteur(x, y);
 	return vecteur;
 }
 
-
 //Méthode permattant de calculer le produit scalaire de deux vecteur
-float produitScalaire(Vector2D vecteur1, Vector2D vecteur2)
-{
+float produitScalaire(Vector2D vecteur1, Vector2D vecteur2) {
 	float produitScalaireV1V2 = 0;
-	produitScalaireV1V2 = (vecteur1._x*vecteur2._x) + (vecteur1._y*vecteur2._y); 
+	produitScalaireV1V2 = (vecteur1._x*vecteur2._x) + (vecteur1._y*vecteur2._y);
 	return produitScalaireV1V2;
 }
 
-
-
-Vector2D calculNormaleInterieur(Point F1, Point F2, std::vector<Point> listeDesPoints)
-{
+Vector2D calculNormaleInterieur(Point F1, Point F2, std::vector<Point> listeDesPoints) {
 	Vector2D vecteurP1P2 = calculerVecteur(F1, F2);
 	Point P3;
-	
+
 	std::vector<Point>::iterator monIterateur;
 
 	for (monIterateur = listeDesPoints.begin(); monIterateur != listeDesPoints.end(); ++monIterateur)                       // Permet d'obtenir n'importe quel point du polygone qui n'est pas P1 ou P2
-	{                                                                   
-		if (*monIterateur == F1 || *monIterateur == F2)                                    
-			continue;                                                   
-		else
-		{
+	{
+		if (*monIterateur == F1 || *monIterateur == F2)
+			continue;
+		else {
 			P3 = *monIterateur;
 			break;
 		}
 	}
 	Vector2D vecteurP1P3 = calculerVecteur(F1, P3);
-	Vector2D normal1(-vecteurP1P2._y, vecteurP1P2._x);                         
-	Vector2D normal2(vecteurP1P2._y, -vecteurP1P2._x);                         
+	Vector2D normal1(-vecteurP1P2._y, vecteurP1P2._x);
+	Vector2D normal2(vecteurP1P2._y, -vecteurP1P2._x);
 	//renvoie la normal1 ou normal2 en fonction du résultat du produit scalaire
-	if (0 < produitScalaire(vecteurP1P3, normal1))                            
+	if (0 < produitScalaire(vecteurP1P3, normal1))
 		return normal1;
-	else																		
+	else
 		return normal2;
-
 }
 
 //Méthode pour vérifier si un point est du coté visible ou non
-bool visible(Point P1, Point F1, Point F2, std::vector<Point> list)
-{
+bool visible(Point P1, Point F1, Point F2, std::vector<Point> list) {
 	bool estVisible = false;
 	float resultatProduitScalaire = 0.0;
 	Vector2D normaleFenetre = Vector2D(0, 0);
-	Vector2D vectortemp = Vector2D(0, 0); 
+	Vector2D vectortemp = Vector2D(0, 0);
 
 	normaleFenetre = calculNormaleInterieur(F1, F2, list);
 	vectortemp = calculerVecteur(F1, P1);
 	resultatProduitScalaire = produitScalaire(vectortemp, normaleFenetre);
-	if (resultatProduitScalaire > 0)
-	{
+	if (resultatProduitScalaire > 0) {
 		estVisible = true;
 	}
 
 	return estVisible;
 }
 
-bool coupe(Point P1, Point P2, Point F1, Point F2, std::vector<Point> list)
-{
+bool coupe(Point P1, Point P2, Point F1, Point F2, std::vector<Point> list) {
 	bool coupe = false;
 	bool P1estVisible = false;
 	bool P2estVisible = false;
 	// On vérifie si le point P1 et P2 sont visibles par F1F2
-	P1estVisible = visible(P1, F1, F2, list); 
-	P2estVisible = visible(P2, F1, F2, list); 
-	if ((P1estVisible && !P2estVisible) || (P2estVisible && !P1estVisible)) 
-	{
+	P1estVisible = visible(P1, F1, F2, list);
+	P2estVisible = visible(P2, F1, F2, list);
+	if ((P1estVisible && !P2estVisible) || (P2estVisible && !P1estVisible)) {
 		coupe = true;
 	}
 
 	return coupe;
-		
 }
 
-Point intersection(Point P1, Point P2, Point F1, Point F2)
-{
+Point intersection(Point P1, Point P2, Point F1, Point F2) {
 	Point pointIntersection;
-	float s = 0.; 
-	float t = 0.; 
+	float s = 0.;
+	float t = 0.;
 	float numS = ((P1._y - F1._y)*(P2._x - P1._x) - (P1._x - F1._x)*(P2._y - P1._y));
 	float numT = ((P1._y - F1._y)*(F2._x - F1._x) - (P1._x - F1._x)*(F2._y - F1._y));
 	float denominateur = ((P2._x - P1._x)*(F2._y - F1._y) - (P2._y - P1._y)*(F2._x - F1._x));
-	if (0. != denominateur || 0. != numS)
-	{
+	if (0. != denominateur || 0. != numS) {
 		t = numT / denominateur;
 		s = numS / denominateur;
-		if ((0 <= t && 1 >= t) && (0 <= s && 1 >= s))
-		{
-			pointIntersection = Point((P1._x + (t*(P2._x - P1._x))), (P1._y + (t*(P2._y - P1._y)))); 
+		if ((0 <= t && 1 >= t) && (0 <= s && 1 >= s)) {
+			pointIntersection = Point((P1._x + (t*(P2._x - P1._x))), (P1._y + (t*(P2._y - P1._y))));
 			return pointIntersection;
-		}
-		else if ((1 < s || 0 > s) && (0 <= t && 1 >= t)) 
-		{
-			pointIntersection = Point((P1._x + (t*(P2._x - P1._x))), (P1._y + (t*(P2._y - P1._y)))); 
+		} else if ((1 < s || 0 > s) && (0 <= t && 1 >= t)) {
+			pointIntersection = Point((P1._x + (t*(P2._x - P1._x))), (P1._y + (t*(P2._y - P1._y))));
 			return pointIntersection;
 		}
 	}
 	return pointIntersection;
 }
 
-void algorithmeSuthern(std::vector<Point> Fenetre, std::vector<Point> PolygonAClipper)
-{
+void algorithmeSuthern(std::vector<Point> Fenetre, std::vector<Point> PolygonAClipper) {
 	monPolygoneFinal = PolygonAClipper;
-	Point premierPoint;                                                                                
+	Point premierPoint;
 	Point I;
 	Point S;
 	int i = 0, j = 0;
-	std::vector<Point>::iterator fenetreIterator;                                                             
-	std::vector<Point>::iterator polygoneIterator;                                                            
-	for (fenetreIterator = Fenetre.begin(); fenetreIterator != Fenetre.end(); ++fenetreIterator)
-	{
+	std::vector<Point>::iterator fenetreIterator;
+	std::vector<Point>::iterator polygoneIterator;
+	for (fenetreIterator = Fenetre.begin(); fenetreIterator != Fenetre.end(); ++fenetreIterator) {
 		j = 0;
-		for (polygoneIterator = monPolygoneFinal.begin(); polygoneIterator != monPolygoneFinal.end(); ++polygoneIterator)
-		{
-			if (0 == j)                                                                         
+		for (polygoneIterator = monPolygoneFinal.begin(); polygoneIterator != monPolygoneFinal.end(); ++polygoneIterator) {
+			if (0 == j)
 				premierPoint = *polygoneIterator;
-			else
-			{
+			else {
 				Point pointSuivant = (*fenetreIterator == Fenetre.back()) ? Fenetre.front() : (Fenetre[i + 1]);
-				if (coupe(S, *polygoneIterator, *fenetreIterator, pointSuivant, Fenetre))
-				{
+				if (coupe(S, *polygoneIterator, *fenetreIterator, pointSuivant, Fenetre)) {
 					I = intersection(S, *polygoneIterator, *fenetreIterator, pointSuivant);
 					monPolygoneFinalTemporaire.push_back(I);
 				}
@@ -569,24 +491,19 @@ void algorithmeSuthern(std::vector<Point> Fenetre, std::vector<Point> PolygonACl
 
 			j++;
 		}
-		if (!monPolygoneFinalTemporaire.empty())
-		{
-			
+		if (!monPolygoneFinalTemporaire.empty()) {
+
 			Point pointSuivant = (*fenetreIterator == Fenetre.back()) ? Fenetre.front() : (Fenetre[i + 1]);
-			if (coupe(S, premierPoint, *fenetreIterator, pointSuivant, Fenetre))
-			{
+			if (coupe(S, premierPoint, *fenetreIterator, pointSuivant, Fenetre)) {
 				I = intersection(S, premierPoint, *fenetreIterator, pointSuivant);
 				monPolygoneFinalTemporaire.push_back(I);
 			}
 			monPolygoneFinal = monPolygoneFinalTemporaire;
 			monPolygoneFinalTemporaire.clear();
-		}
-		else
-			monPolygoneFinal.clear();                                                           
+		} else
+			monPolygoneFinal.clear();
 
 		i++;
 	}
-	afficherPolygoneClipper = true;                                                                          
+	afficherPolygoneClipper = true;
 }
-
-
