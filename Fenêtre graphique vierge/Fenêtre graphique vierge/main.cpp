@@ -16,13 +16,10 @@
 
 
 
-#include<windows.h>
-#include<GL/glut.h>
-#include<stdlib.h>
-#include<stdio.h>
-#include<iostream>
-#include<vector>
-#include"Vector2D.h"
+#include "stdafx.h"
+
+#define _WINDOW_HEIGHT	500
+#define _WINDOW_WIDTH	500
 
 int clicx, clicy;  // clic souris
 int cpt = 0;
@@ -155,12 +152,12 @@ int main(int argc,       // argc: nombre d'arguments, argc vaut au moins 1
 	/* Initialisation de glut et creation de la fenetre */
 	glutInit(&argc, argv);                       // Initialisation
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH); // mode d'affichage RGB, et test prafondeur
-	glutInitWindowSize(500, 500);                // dimension fenêtre
+	glutInitWindowSize(_WINDOW_WIDTH, _WINDOW_HEIGHT);				// dimension fenêtre
 	glutInitWindowPosition(100, 100);           // position coin haut gauche
-	glutCreateWindow("A vous de jouer!!!");  // nom
+	glutCreateWindow("A vous de jouer!!!");		// nom
 
 	/* Repère 2D délimitant les abscisses et les ordonnées*/
-	gluOrtho2D(-250.0, 250.0, -250.0, 250.0);
+	gluOrtho2D(-_WINDOW_WIDTH / 2, _WINDOW_WIDTH / 2, -_WINDOW_HEIGHT / 2, _WINDOW_HEIGHT / 2);
 
 	/* Initialisation d'OpenGL */
 	glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -302,7 +299,7 @@ void mouse(int button, int state, int x, int y)
 	{
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 		{
-			
+
 		}
 		
 	}

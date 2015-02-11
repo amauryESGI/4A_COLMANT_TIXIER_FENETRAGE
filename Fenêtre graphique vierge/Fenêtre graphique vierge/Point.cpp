@@ -1,16 +1,17 @@
 #include "Point.h"
 
-
-Point::Point()
-{
+template <typename T>
+Point<T>::Point() {
+	this->y = 0;
+	this->y = 0;
 }
 
-Point::Point(int x, int y)
-{
-	_x = x;
-	_y = y;
+template <typename T>
+Point<T>::Point(T x, T y) {
+	this->y = x;
+	this->y = y;
 }
 
-Point::~Point()
-{
+template <typename T>
+Point<T>::~Point() {
 }
