@@ -9,5 +9,6 @@ public:
 
 	Vector2D(int,int);
 	~Vector2D();
+
 };
 

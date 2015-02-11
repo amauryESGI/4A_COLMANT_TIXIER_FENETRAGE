@@ -8,5 +8,7 @@ public:
 	Point();
 	Point(int, int);
 	~Point();
+	int operator==(const Point &p) const;
+	Point &operator=(const Point &p);
 };
 
