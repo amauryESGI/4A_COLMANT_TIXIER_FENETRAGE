@@ -9,7 +9,7 @@ RemplissageLCA::RemplissageLCA(const int w, const int h) {
 RemplissageLCA::~RemplissageLCA() {
 }
 
-void RemplissageLCA::Remplir(vector<Point<int>> v) {
+void RemplissageLCA::Remplir(vector<MPoint<int>> v) {
 	vector<vector<int>> lca(_height);
 
 	for (int i = 0; i < _height; i++) {
@@ -17,17 +17,17 @@ void RemplissageLCA::Remplir(vector<Point<int>> v) {
 		lca[i].push_back(_width);
 	}
 
-	for (vector<Point<int>>::iterator itV = v.begin(); itV != v.end(); ++itV) {
-		Point<int> pA = *itV;
-		Point<int> pB = (itV + 1) == v.end() ? v[0] : *(itV + 1);
+	for (vector<MPoint<int>>::iterator itV = v.begin(); itV != v.end(); ++itV) {
+		MPoint<int> pA = *itV;
+		MPoint<int> pB = (itV + 1) == v.end() ? v[0] : *(itV + 1);
 
 		if (pA.y == pB.y) {
 			lca[pA.y].push_back(pA.x);
 			lca[pB.y].push_back(pB.x);
 		} else {
-			map<int, Point<int>> segment = allPoint(pA, pB);
+			map<int, MPoint<int>> segment = allPoint(pA, pB);
 
-			for (map<int, Point<int>>::iterator itM = segment.begin(); itM != segment.end(); ++itM) {
+			for (map<int, MPoint<int>>::iterator itM = segment.begin(); itM != segment.end(); ++itM) {
 				lca[(*itM).first].push_back((*itM).second.x);
 			}
 		}
@@ -53,12 +53,12 @@ void RemplissageLCA::Remplir(vector<Point<int>> v) {
 
 }
 
-float RemplissageLCA::coefDir(Point<int> pA, Point<int> pB) {
+float RemplissageLCA::coefDir(MPoint<int> pA, MPoint<int> pB) {
 	return (pB.y - pA.y) / (pB.x - pA.x);
 }
 
-map<int, Point<int>> RemplissageLCA::allPoint(Point<int> pA, Point<int> pB) {
-	map<int, Point<int>> retour;
+map<int, MPoint<int>> RemplissageLCA::allPoint(MPoint<int> pA, MPoint<int> pB) {
+	map<int, MPoint<int>> retour;
 
 	int i, check, size;
 	if (pA.y < pB.y) {
@@ -76,13 +76,13 @@ map<int, Point<int>> RemplissageLCA::allPoint(Point<int> pA, Point<int> pB) {
 	retour[pA.y] = pA;
 	retour[pB.y] = pB;
 
-	Point<float> tmp = pA.y < pB.y
-		? Point<float>(pA.x / 1, pA.y / 1)
-		: Point<float>(pB.x / 1, pB.y / 1);
+	MPoint<float> tmp = pA.y < pB.y
+		? MPoint<float>(pA.x / 1, pA.y / 1)
+		: MPoint<float>(pB.x / 1, pB.y / 1);
 
 	for (i += 1; i < check; ++i) {
-		tmp = Point<float>(tmp.x + 1 / m, i);
-		retour[i] = Point<int>(round(tmp.x), tmp.y);
+		tmp = MPoint<float>(tmp.x + 1 / m, i);
+		retour[i] = MPoint<int>(round(tmp.x), tmp.y);
 	}
 	return retour;
 }

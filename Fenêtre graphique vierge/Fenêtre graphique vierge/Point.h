@@ -1,17 +1,27 @@
 #ifndef _POINT_H
 #define _POINT_H
 
-template <typename T> class Point {
+template <typename T> class MPoint {
 public:
 	T x;
 	T y;
 
-	Point(T, T);
+	MPoint();
+	MPoint(T, T);
+	~MPoint();
+};
+
+class Point {
+public:
+	int _x;
+	int _y;
+
+	Point();
+	Point(int, int);
 	~Point();
 
-	bool operator==(const Point<int>& pA, const Point<int>& pB) {
-		return pA.x == pB.x && pA.y == pB.y;
-	}
+	int operator==(const Point &p) const;
+	Point &operator=(const Point &p);
 };
 
 #endif

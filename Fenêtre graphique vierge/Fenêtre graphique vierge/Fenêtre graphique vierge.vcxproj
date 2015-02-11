@@ -70,11 +70,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="RemplissageLCA.cpp" />
+    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h" />
     <ClInclude Include="RemplissageLCA.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
