@@ -32,13 +32,13 @@ void RemplissageLCA::Remplir(vector<MPoint<int>> v) {
 			}
 		}
 
-		for (int y = 0; y < lca.size; ++y) {
-			if (lca[y].size % 2)
-				continue;
+		for (int y = 0; y < lca.size(); ++y) {
+			if (lca[y].size() % 2)
+				continue; 
 
 			sort(lca[y].begin(), lca[y].end(), myobject);
 
-			for (int j = 0; j < lca[y].size - 1; ++j) {
+			for (int j = 0; j < lca[y].size() - 1; ++j) {
 				if (lca[y][j] % 2) {
 					for (int x = lca[y][j]; x <= lca[y][j + 1]; x++) {
 						glBegin(GL_POINTS);
